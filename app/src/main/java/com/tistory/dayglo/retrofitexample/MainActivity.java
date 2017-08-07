@@ -16,6 +16,8 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final TextView textView = (TextView) findViewById(R.id.text_view);
                 textView.setText("");
-
+                // Synchronous(동기) 처리
                 GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
                 final Call<List<Contributor>> call = gitHubService.repoContributors("Jibcon", "jibcon_android");
                 new NetworkCall().execute(call);
@@ -98,5 +100,14 @@ public class MainActivity extends AppCompatActivity {
             final TextView textView = (TextView) findViewById(R.id.text_view);
             textView.setText(result);
         }
+    }
+
+    static OkHttpClient createOkHttpClient() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.addInterceptor(interceptor);
+
+        return builder.build();
     }
 }
