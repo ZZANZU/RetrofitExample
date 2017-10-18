@@ -14,14 +14,14 @@ import static com.tistory.dayglo.retrofitexample.MainActivity.createOkHttpClient
  * Created by user on 2017-08-06.
  */
 
-public interface GitHubService {
-    @GET("repos/{owner}/{repo}/contributors")
-    Call<List<Contributor>> repoContributors(
-            @Path("owner") String owner,
-            @Path("repo") String repo);
+public interface MysqlService {
+    @GET("student")
+    Call<List<Student>> repoStudent();
+//            @Path("id") int id);
+//            @Path("repo") String repo);
 
     public static final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
+            .baseUrl("http://13.59.174.162:7579/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(createOkHttpClient())
             .build();

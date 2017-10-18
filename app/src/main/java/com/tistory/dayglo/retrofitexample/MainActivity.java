@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,9 +18,7 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     public String TAG = "CJ";
@@ -33,15 +30,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         Button button = (Button)findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             // 집콘의 contributor와 contribution 수를 받아오기.
@@ -50,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 final TextView textView = (TextView) findViewById(R.id.text_view);
                 textView.setText("");
                 // Synchronous(동기) 처리
-                GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
-                final Call<List<Contributor>> call = gitHubService.repoContributors("Jibcon", "jibcon_android");
+                MysqlService mysqlService = MysqlService.retrofit.create(MysqlService.class);
+                final Call<List<Student>> call = mysqlService.repoStudent();
                 new NetworkCall().execute(call);
             }
         });
@@ -84,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Call... params) {
             try {
-                Call<List<Contributor>> call = params[0];
-                Response<List<Contributor>> response = call.execute();
+                Call<List<Student>> call = params[0];
+                Response<List<Student>> response = call.execute();
 
                 return response.body().toString();
 
